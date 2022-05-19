@@ -3,7 +3,7 @@
     p {
         color: $blanco;
     }
-    a, h1, h2, h3, h3 {
+    a, h1, h2, h3, h4 {
         color: $gris;
     }
     .anuncio,
@@ -21,6 +21,21 @@
         color: $blanco;
     }
     .formulario {
-        
+        label,
+        legend,
+        p {
+            color: $gris;
+        }
+        input:not([type="submit"]), 
+        textarea,
+        select {
+            background-color: $grisOscuro;
+            border: 1px solid $grisOscuro;
+            color: $blanco;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator,
+        input[type="time"]::-webkit-calendar-picker-indicator {
+            filter: invert(100%);
+        }
     }
 }
