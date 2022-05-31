@@ -1,4 +1,7 @@
-<?php include "includes/templates/header.php"; ?> 
+<?php
+    require "includes/funciones.php";
+    incluirTemplate("header");
+?>
     <main class="contenedor seccion contenido-centrado">
         <h1>Casa en Venta Frente al Bosque</h1>
         <picture>
@@ -26,17 +29,6 @@
             <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero possimus dolorem a ex blanditiis fugiat sunt aspernatur, voluptatibus ullam architecto error ut cum natus doloribus, saepe sit aut maxime quae!</p>
         </div>
     </main>
-    <footer class="footer seccion">
-        <div class="contenedor contenedor-footer">
-            <nav class="navegacion">
-                <a href="nosotros.php">Nosotros</a>
-                <a href="anuncios.php">Anuncios</a>
-                <a href="blog.php">Blog</a>
-                <a href="contacto.php">Contacto</a>
-            </nav>
-        </div>
-        <p class="copyright">Todos los derechos reservados 2022 &copy;</p>
-    </footer>
-    <script src="build/js/bundle.min.js"></script>
-</body>
-</html>
+<?php
+    incluirTemplate("footer");
+?>   
