@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/build/css/app.css">
 </head>
 <body>
-    <header class="header <?php echo $inicio ? 'inicio' : ''; ?>">
+    <header class="header <?php echo $inicio  ? 'inicio' : ''; ?>">
         <div class="contenedor contenido-header">
             <div class="barra">
                 <a href="/">
@@ -27,8 +27,6 @@
                     </nav>
                 </div>
             </div> <!--.barra-->
-                <?php if($inicio): ?>
-                    <h1>Venta de Casas y Departamentos de lujo</h1>
-                <?php endif;?>
+                <?php echo $inicio ? "<h1>Venta de Casas y Departamentos Exclusivos de Lujo</h1>" : ''; ?>
             </div>
     </header>

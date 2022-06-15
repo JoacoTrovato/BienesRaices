@@ -20,7 +20,7 @@
         $query = "INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, vendedorId)
         VALUES ('$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$vendedorId')";
     
-        // echo $query;
+        echo $query;
         $FKfix = "SET FOREIGN_KEY_CHECKS=0;"; 
         mysqli_query($db, $FKfix);
 
@@ -36,7 +36,7 @@
             echo "</pre>";
         } catch (\Throwable $th) {
             //throw $th;
-            echo "nNo se conectó correctamente";
+            echo "No se conectó correctamente";
         }
         
     }
