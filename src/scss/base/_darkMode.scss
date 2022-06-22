@@ -38,4 +38,13 @@
             filter: invert(100%);
         }
     }
+    .propiedades {
+        tbody {
+            tr {
+                td {
+                    color: $blanco;
+                }
+            }   
+        }  
+    }
 }
