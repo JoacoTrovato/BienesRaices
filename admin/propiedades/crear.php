@@ -23,13 +23,21 @@
         // var_dump($_POST);
         // echo "</pre>";
 
-        $titulo = $_POST["titulo"];
-        $precio = $_POST["precio"];
-        $descripcion = $_POST["descripcion"];
-        $habitaciones = $_POST["habitaciones"];
-        $wc = $_POST["wc"];
-        $estacionamiento = $_POST["estacionamiento"];
-        $vendedorId = $_POST["vendedorId"];
+        // echo "<pre>";
+        // var_dump($_FILES);
+        // echo "</pre>";
+
+        $titulo = mysqli_real_escape_string( $db,  $_POST['titulo'] );
+        $precio = mysqli_real_escape_string( $db,  $_POST['precio'] );
+        $descripcion = mysqli_real_escape_string( $db,  $_POST['descripcion'] );
+        $habitaciones = mysqli_real_escape_string( $db,  $_POST['habitaciones'] );
+        $wc = mysqli_real_escape_string( $db,  $_POST['wc'] );
+        $estacionamiento = mysqli_real_escape_string( $db,  $_POST['estacionamiento'] );
+        $vendedorId = mysqli_real_escape_string( $db,  $_POST['vendedorId'] );
+        $creado = date('Y/m/d');
+
+        // Asignar files hacia una variable
+        $imagen = $_FILES['imagen'];
 
         if(!$titulo) {
             $errores[] = "Debes añadir un título";
@@ -52,6 +60,16 @@
         if(!$vendedorId) {
             $errores[] = "Debes seleccionar un vendedor";
         }
+        if(!$imagen["name"] || $imagen["error"]) {
+            $errores[] = "La imagen es obligatoria";
+        }
+
+        // Validar por tamaño (10MB máximo)
+        $medida = 1000 * 10000;
+
+        if($imagen["size"] > $medida) {
+            $errores[] = "La imagen es muy pesada";
+        }
 
         // echo "<pre>";
         // var_dump($errores);
@@ -59,11 +77,26 @@
 
         // Revisar que el array de errores esté vacío   
         if(empty($errores)) {
-        // Insertar en la base de datos
-            $query = "INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, vendedorId)
-            VALUES ('$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$vendedorId')";
+            /** SUBIDA DE ARCHIVOS **/
             
-            echo $query;
+            // Crear carpeta
+            $carpetaImagenes = "../../imagenes/";
+
+            if(!is_dir($carpetaImagenes)) {
+                mkdir($carpetaImagenes);
+            }
+
+            // Generar un nombre único
+            $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
+
+            // Subir la imagen
+            move_uploaded_file($imagen["tmp_name"], $carpetaImagenes . $nombreImagen);
+        
+            // Insertar en la base de datos
+            $query = "INSERT INTO propiedades (titulo, precio, imagen, descripcion, habitaciones, wc, estacionamiento, creado, vendedorId)
+            VALUES ('$titulo', '$precio', '$nombreImagen', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$creado', '$vendedorId')";
+            
+            //echo $query;
             $FKfix = "SET FOREIGN_KEY_CHECKS=0;"; 
             mysqli_query($db, $FKfix);
 
@@ -73,6 +106,9 @@
 
                 if($resultado) {
                 // echo "Insertado Correctamente";
+                    
+                // Redireccionando al usuario
+                    header("location: /admin?resultado=1");
                 }
                 // echo "<pre>";
                 // var_dump($resultado);
@@ -95,7 +131,7 @@
                 <?php echo $error; ?>
             </div>
         <?php endforeach; ?>
-        <form class="formulario" method="POST" action="/admin/propiedades/crear.php">
+        <form class="formulario" method="POST" action="/admin/propiedades/crear.php" enctype="multipart/form-data">
             <fieldset>
                 <legend>Información General</legend>
                 <label for="titulo">Título:</label>
@@ -117,7 +153,8 @@
                     type="file"
                     id="imagen" 
                     accept="image/jpeg, image/png" 
-                    placeholder="Imagen">
+                    placeholder="Imagen"
+                    name="imagen">
                 <label for="descripcion">Descripción:</label>
                 <textarea 
                     id="descripcion" 

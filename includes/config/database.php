@@ -7,7 +7,7 @@ function conectarDB() : mysqli {
     if(!$db) {
         echo "Error no se pudo conectar";
     } else {
-        echo "Conexión Correcta";
+        // echo "Conexión Correcta";
     }
  
     return $db;
